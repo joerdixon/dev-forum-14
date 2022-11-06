@@ -8,13 +8,14 @@ const sequelize = require("./config/connection");
 const session = require("express-session");
 // Require connect-session-sequelize package and ??? create a variable containing our session storage object ???
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
-
+// Import our routes
+const routes = require("./controllers")
 // Create an express application
 const app = express();
 // Declare our port where our server will be hosted.
 const PORT = process.env.PORT || 3000;
-// Requiring our models for syncing TODO: UPDATE FOR THIS APP
-const { User } = require("./models");
+// Requiring our models for syncing
+const { User, Post, Comment } = require("./models");
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +38,8 @@ app.use(
     }), 
   })
 );
+
+app.use(routes);
 
 // Static directory for frontend
 app.use(express.static("public"));

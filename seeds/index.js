@@ -44,6 +44,7 @@ const seed = async ()=> {
             UserId: 1
         }
     ])
+    
     // Comment seeds
     const comments = await Comment.bulkCreate([
         {
