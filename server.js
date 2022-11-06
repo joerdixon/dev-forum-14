@@ -6,7 +6,7 @@ const exphbs = require("express-handlebars");
 const sequelize = require("./config/connection");
 // Express Sessions
 const session = require("express-session");
-// TODO: UNDERSTAND BETTER WHAT THIS DOES AND COMMENT
+// Require connect-session-sequelize package and ??? create a variable containing our session storage object ???
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 // Create an express application
@@ -20,10 +20,10 @@ const { User } = require("./models");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// TODO:UNDERSTAND BETTER WHAT THIS DOES AND COMMENT.
+// Express-session middleware 
 app.use(
   session({
-    // Points to the session secret in our .env
+    // Points to the session secret in our .env, more options and settings below.
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
@@ -31,9 +31,10 @@ app.use(
         // The cookie will expire in this many milliseconds (2 hours total)
       maxAge: 2 * 60 * 60 * 1000,
     },
+    // Declare session store instance pointing to our sequelize config for our database.
     store: new SequelizeStore({
-      db: sequelize,
-    }),
+    db: sequelize,
+    }), 
   })
 );
 
@@ -42,9 +43,9 @@ app.use(express.static("public"));
 
 // Create our express handlebars instance
 const hbs = exphbs.create({});
-// Tell express to use handlebars and our created engine as our template engine.
+// Some config and settings for our handlebars engine.
 app.engine("handlebars", hbs.engine);
-// TODO: UNDERSTAND BETTER WHAT THIS DOES AND COMMENT.
+// Tell express to use handlebars and our created engine as our template engine.
 app.set("view engine", "handlebars");
 
 // Set sequelize to sync with express. 
