@@ -1,5 +1,6 @@
 // Create express router.
 const router = require("express").Router();
+// Require our models.
 const {User, Post, Comment} = require('../models');
 const bcrypt = require("bcrypt")
 
@@ -41,6 +42,17 @@ router.post("/login",(req,res)=>{
         // Send back their information.
         res.json(foundUser);
     })
+})
+
+// Sign Up
+router.post("/signup", (req, res) => {
+    // The request object should have all the data needed, grabbed from the form on the frontend.
+    User.create({
+        username: req.body.username,
+        password: req.body.password
+    }).then(newUser => {
+        res.json(newUser)
+    }).catch(err => res.status(500).json({err:err}))
 })
 
 // Export the router for use in main router file.
