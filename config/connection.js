@@ -6,6 +6,9 @@ require('dotenv').config();
 let sequelize;
 
 // Create new sequelize instance, using our environment variables.
+if (process.env.JAWSDB_URL) {
+    sequelize = new Sequelize
+}
 sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,

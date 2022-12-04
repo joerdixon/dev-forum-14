@@ -5,19 +5,28 @@ const Comment = require("./Comment");
 
 // Users can have many posts.
 User.hasMany(Post, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
+    foreignKey:{
+        allowNull:false
+    }
 });
 Post.belongsTo(User);
 
 // Users can have many comments.
 User.hasMany(Comment, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
+    foreignKey:{
+        allowNull:false
+    }
 });
 Comment.belongsTo(User);
 
 // Posts can also have many comments.
 Post.hasMany(Comment, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
+    foreignKey:{
+        allowNull:false
+    }
 });
 Comment.belongsTo(Post);
 

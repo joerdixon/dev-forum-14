@@ -8,6 +8,7 @@ class Comment extends Model {}
 
 // Define the Comment tables for our database.
 Comment.init({
+    // Comments will have text content
     content: {
         type: DataTypes.TEXT,
         allowNull: false

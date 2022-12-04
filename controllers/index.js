@@ -15,14 +15,8 @@ router.use(frontendRoutes);
 
 // Root route to see the session data
 router.get("/sess", (req, res) => {
+    console.log(req.session);
     res.json(req.session)
-})
-
-// Route for logout
-router.get("/logout", (req, res) => {
-    console.log(req.session)
-    req.session.destroy();
-    res.redirect("/");
 })
 
 // Export the router for use in the main server file.

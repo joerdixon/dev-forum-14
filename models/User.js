@@ -23,6 +23,7 @@ User.init({
         }
     }
 }, {
+    // Before each new user is created.
     hooks: {
         beforeCreate: userObj => {
             // Hash (encrypt) a new users password with 5 rounds of salt.

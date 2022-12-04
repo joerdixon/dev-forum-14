@@ -29,13 +29,13 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-        // The cookie will expire in this many milliseconds (2 hours total)
+      // The cookie will expire in this many milliseconds (2 hours total)
       maxAge: 2 * 60 * 60 * 1000,
     },
     // Declare session store instance pointing to our sequelize config for our database.
     store: new SequelizeStore({
-    db: sequelize,
-    }), 
+      db: sequelize,
+    }),
   })
 );
 

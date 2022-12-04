@@ -3,14 +3,13 @@ const { User, Post, Comment } = require("../models")
 
 // Serves the homepage with post and comments
 router.get("/", (req, res) => {
-    res.render("home");
+    res.render("home", {userInfo:req.session.userInfo});
 })
 
 // TODO: currently seems like the req.session data is not making it to this route.
 
 // Serves the dashboard with the current users posts and comments
 router.get("/dashboard", (req, res) => {
-    console.log(req.session)
     // If they are not logged in redirect to the login page.
     if(!req.session.userInfo){
         return res.redirect("/login")
@@ -37,13 +36,6 @@ router.get("/login", (req, res) => {
 // User Signup
 router.get("/signup", (req, res) => {
     res.render("signup")
-})
-
-// Ends the session
-router.get("/logout", (req, res) => {
-    req.session.destroy((err) => {
-        res.redirect('/')
-      })
 })
 
 module.exports=router;
