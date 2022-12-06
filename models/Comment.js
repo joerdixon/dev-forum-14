@@ -2,6 +2,7 @@
 const { Model, DataTypes } = require("sequelize");
 // Import our sequelize instance
 const sequelize = require("../config/connection");
+const moment = require("moment");
 
 // Create Comment from Model
 class Comment extends Model { }
@@ -9,33 +10,28 @@ class Comment extends Model { }
 // Define the Comment tables for our database.
 Comment.init({
     // Comments will have text content
-    id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-    },
     content: {
         type: DataTypes.TEXT,
         allowNull: false
     },
-    user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        reference: {
-            model: "users",
-            key: "id",
-        },
+    date:{
+        type: DataTypes.DATE,
+        defaultValue: NOW,
+        allowNull: false
     },
-    blog_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        reference: {
-            model: "blog",
-            key: "id",
-        },
+    createdAt: {
+        type: DataTypes.DATE,                 
+      get() {
+            return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY h:mm:ss');
+        }
     },
-}, {
+    updatedAt: {
+        type: DataTypes.DATE,
+        get() {
+            return moment(this.getDataValue('updatedAt')).format('DD/MM/YYYY h:mm:ss');
+        }
+    }
+},{
     sequelize
 })
 

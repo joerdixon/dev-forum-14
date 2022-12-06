@@ -2,7 +2,6 @@
 const router = require("express").Router();
 // Require our models.
 const { User, Post, Comment } = require('../models');
-const bcrypt = require("bcrypt")
 
 // All Accounts + Posts and Comments
 router.get("/", (req, res) => {
@@ -19,50 +18,57 @@ router.get("/", (req, res) => {
     })
 })
 
-// Login
-router.post("/login", (req, res) => {
-    console.log(req.session);
-    // If the username entered exists find the account.
-    User.findOne({
-        where: {
-            username: req.body.username
+// Login Route
+router.post('/login', async (req, res) => {
+    try {
+        const userData = await User.findOne({ where: { username: req.body.username } });
+        if (!userData) {
+            res
+                .status(400)
+                .json({ message: 'Incorrect username or password' });
+            return;
         }
-    }).then(foundUser => {
-        //If the username is wrong, send generic fail message
-        if (!foundUser) {
-            return res.status(401).json({ msg: "Invalid login credentials" })
+        const validPassword = await userData.checkPassword(req.body.password);
+        if (!validPassword) {
+            res
+                .status(400)
+                .json({ message: 'Incorrect username or password' });
+            return;
         }
-        //Compare the entered password with the decrypted version, if they do not match send generic fail message.
-        if (!bcrypt.compareSync(req.body.password, foundUser.password)) {
-            return res.status(401).json({ msg: "Invalid login credentials" })
-        }
-        // If both fields match, add their username and id to the session memory.
-        req.session.userInfo = {
-            username: foundUser.username,
-            id: foundUser.id
-        }
-        // Send back their information.
-        res.json(foundUser);
-    })
-})
+        req.session.save(() => {
+            req.session.user_id = userData.id;
+            req.session.logged_in = true;
+            res.json({ user: userData, message: 'Logged In!' });
+        });
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
 
-// Sign Up
-router.post("/signup", (req, res) => {
-    console.log(req.session);
-    // The request object should have all the data needed, pulled from the form on the frontend.
-    User.create({
-        username: req.body.username,
-        password: req.body.password
-    }).then(newUser => {
-        res.json(newUser)
-    }).catch(err => res.status(500).json({ err: err }))
-})
+//create user
+router.post('/', async (req, res) => {
+    try {
+        const userData = await User.create(req.body);
+        req.session.save(() => {
+            req.session.user_id = userData.id
+            req.session.logged_in = true;
+            res.status(200).json(userData)
+        })
+    } catch (err) {
+        res.status(400).json(err)
+    }
+});
 
-// Route for logout
-router.get("/logout", (req, res) => {
-    req.session.destroy();
-    res.redirect("/");
-})
+// Logout user.
+router.post('/logout', (req, res) => {
+    if (req.session.logged_in) {
+        req.session.destroy(() => {
+            res.status(204).end();
+        });
+    } else {
+        res.status(404).end();
+    }
+});
 
 
 // Export the router for use in main router file.

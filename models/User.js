@@ -6,20 +6,10 @@ const sequelize = require("../config/connection");
 const bcrypt = require("bcrypt");
 
 // Create User from Model
-class User extends Model {
-    checkPassword(loginPw) {
-      return bcrypt.compareSync(loginPw, this.password);
-    }
-  }
+class User extends Model {}
 
 // Define the User tables for our database.
 User.init({
-    id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-      },
     username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -41,7 +31,9 @@ User.init({
             return userObj;
         }
     },
-    sequelize
-})
+    sequelize,
+    updatedAt: false,
+    createdAt: false
+});
 
 module.exports = User;
