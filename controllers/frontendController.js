@@ -3,10 +3,14 @@ const { User, Post, Comment } = require("../models")
 
 // Serves the homepage with post and comments
 router.get("/", (req, res) => {
-    res.render("home", {userInfo:req.session.userInfo});
+    // Get all posts
+    Post.findAll().then(allPosts => {
+        // Serialize the posts
+        const posts = allPosts.map(post => post.get({plain: true}))
+        console.log(posts.Comments)
+        res.render("home", {userInfo:req.session.userInfo, posts:posts});
+    })
 })
-
-// TODO: currently seems like the req.session data is not making it to this route.
 
 // Serves the dashboard with the current users posts and comments
 router.get("/dashboard", (req, res) => {
@@ -21,8 +25,9 @@ router.get("/dashboard", (req, res) => {
     }).then(userInfo=>{
         // Serialize the data.
         const plainData = userInfo.get({plain:true})
+        console.log(plainData);
         // Serve our profile template with the serialized data inserted.
-       res.render("dashboard",plainData);
+       res.render("dashboard", {plainData:plainData});
     }).catch(err=>{
         res.status(500).json({msg:"error occurred",err})
     })  

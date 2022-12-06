@@ -1,3 +1,15 @@
 {{!-- Profile dashboard (once logged in) --}}
 <h1>Profile Dashboard</h1>
-<p>Welcome {{username}}</p>
+<p>Welcome <span style='font-weight: 800'>{{plainData.username}}</span></p>
+<h2>Your Posts:</h2>
+{{#each plainData.Posts}}
+<h3>{{title}}</h3>
+<div>{{content}}</div>
+{{/each}}
+<h2>New Post:</h2>
+{{!-- <form id="new-post" action="submit">
+    <input id="new-post-title" type="text" placeholder="Title your post...">
+    <input id='new-post-content' type="text" placeholder="Share your thoughts...">
+    <button type="submit"></button>
+</form> --}}
+{{!-- <script src='/js/createPost.js'></script> --}}

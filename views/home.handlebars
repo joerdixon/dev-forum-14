@@ -1,2 +1,15 @@
 {{!-- Home Page --}}
 <h1>Home</h1>
+<div class='posts'>
+    {{#each posts}}
+    <div class='post-content'>
+        <h3>{{title}}</h3>
+        <p>{{content}}</p>
+    </div>
+    <div class='comment-section'>
+        {{#each posts.Comments}}
+        <h5>{{posts.Comments.content}}</h5>
+        {{/each}}
+    </div>
+    {{/each}}
+</div>

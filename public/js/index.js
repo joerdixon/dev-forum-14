@@ -16,7 +16,7 @@ const loginUser = async (event) => {
         // Post the content to our login route
         const response = await fetch('/users/login', {
             method: 'POST',
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username:username, password:password }),
             headers: { 'Content-Type': 'application/json' },
         });
         if (response.ok) {
@@ -40,5 +40,5 @@ const logoutUser = async () => {
     }
 };
 
+loginSubmit.addEventListener("submit", loginUser);
 logoutButton.addEventListener("click", logoutUser);
-loginSubmit.addEventListener("click", loginUser);

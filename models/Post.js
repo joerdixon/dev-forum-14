@@ -8,6 +8,12 @@ class Post extends Model {}
 
 // Define the Post tables for our database.
 Post.init({
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
     title: {
         type: DataTypes.STRING,
         allowNull: false
@@ -15,7 +21,14 @@ Post.init({
     content: {
         type: DataTypes.TEXT,
         allowNull: false
-    }
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
+      },
 }, {
     sequelize
 })
