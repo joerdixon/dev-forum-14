@@ -49,7 +49,7 @@ router.post("/login", (req, res) => {
 // Sign Up
 router.post("/signup", (req, res) => {
     console.log(req.session);
-    // The request object should have all the data needed, grabbed from the form on the frontend.
+    // The request object should have all the data needed, pulled from the form on the frontend.
     User.create({
         username: req.body.username,
         password: req.body.password
@@ -60,7 +60,6 @@ router.post("/signup", (req, res) => {
 
 // Route for logout
 router.get("/logout", (req, res) => {
-    console.log(req.session)
     req.session.destroy();
     res.redirect("/");
 })

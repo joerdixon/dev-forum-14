@@ -5,30 +5,35 @@ const Comment = require("./Comment");
 
 // Users can have many posts.
 User.hasMany(Post, {
+    foreignKey: 'user_id',
     onDelete: "CASCADE",
-    foreignKey:{
-        allowNull:false
-    }
 });
-Post.belongsTo(User);
+
+Post.belongsTo(User, {
+    foreignKey: 'user_id'
+});
 
 // Users can have many comments.
 User.hasMany(Comment, {
+    foreignKey: 'user_id',
     onDelete: "CASCADE",
-    foreignKey:{
-        allowNull:false
-    }
+
 });
-Comment.belongsTo(User);
+
+Comment.belongsTo(User, {
+    foreignKey: 'user_id'
+});
 
 // Posts can also have many comments.
 Post.hasMany(Comment, {
+    foreignKey: 'blog_id',
     onDelete: "CASCADE",
-    foreignKey:{
-        allowNull:false
-    }
+
 });
-Comment.belongsTo(Post);
+
+Comment.belongsTo(Post, {
+    foreignKey: 'blog_id'
+});
 
 // Export our models for use in other files.
 module.exports={

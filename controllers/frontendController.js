@@ -4,11 +4,14 @@ const { User, Post, Comment } = require("../models")
 // Serves the homepage with post and comments
 router.get("/", (req, res) => {
     // Get all posts
-    Post.findAll().then(allPosts => {
+    Post.findAll({
+        include: [User, Comment]
+    }).then(allPosts => {
         // Serialize the posts
-        const posts = allPosts.map(post => post.get({plain: true}))
-        console.log(posts.Comments)
-        res.render("home", {userInfo:req.session.userInfo, posts:posts});
+        const posts = allPosts.map(post => post.get({plain: true}));
+        res.render("home", {
+            posts:posts
+        });
     })
 })
 

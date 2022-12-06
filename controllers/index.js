@@ -1,23 +1,9 @@
-// Create express router
-const router = require("express").Router();
+const router = require('express').Router();
+// Import our API routes
+const apiRoutes = require('./api');
+const frontEndController = require("./frontEndController")
 
-// Import our model controllers
-const userRoutes = require("./userController");
-const postRoutes = require("./postController");
-const commentRoutes = require("./commentController");
-const frontendRoutes = require("./frontendController");
+router.use('/api', apiRoutes);
+router.use(frontEndController);
 
-// Route the appropriate urls to the appropriate controllers
-router.use("/users", userRoutes);
-router.use("/posts", postRoutes);
-router.use("/comments", commentRoutes);
-router.use(frontendRoutes);
-
-// Root route to see the session data
-router.get("/sess", (req, res) => {
-    console.log(req.session);
-    res.json(req.session)
-})
-
-// Export the router for use in the main server file.
-module.exports=router;
+module.exports = router;
